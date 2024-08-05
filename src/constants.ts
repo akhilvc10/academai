@@ -1,1 +1,1 @@
-export const BASE_URL = "https://academai-0e2079b772fd.herokuapp.com"
+export const BASE_URL = process.env.BASE_URL

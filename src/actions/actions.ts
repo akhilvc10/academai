@@ -44,7 +44,8 @@ export const evaluateSingleTopicAnswers = async ({
 
 export const getFinalReport = async ({ student_id, subject }) => {
 	const url = `${BASE_URL}/api/v1/academai/final_report?student_id=${student_id}&subject=${subject}
-`;
+	`;
+	console.log("🚀 ~ file: actions.ts ~ line 47 ~ getFinalReport ~ url", url)
 
 	const response = await fetch(url, {
 		method: "GET", // Specify the HTTP method
@@ -57,7 +58,7 @@ export const getFinalReport = async ({ student_id, subject }) => {
 		throw new Error(`HTTP error! Status: ${response.status}`);
 	}
 
-	const responseData = response.json();
+	const responseData = await response.json();
 	console.log("🚀 ~ file: actions.ts ~ line 61 ~ getFinalReport ~ responseData", responseData)
 
 	return responseData;

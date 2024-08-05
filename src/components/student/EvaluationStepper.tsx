@@ -16,6 +16,8 @@ import {
 } from "@/actions/actions";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
+import EvaluationResult from "./EvaluationResult";
+import SingleEvaluationResult from "./SingleEvaluationResult";
 
 export default function EvaluationStepper({
 	questions,
@@ -256,33 +258,9 @@ export default function EvaluationStepper({
 										disabled={isSubmitted}
 									/>
 									{isSubmitted && evaluationResults[question.question_id] && (
-										<div className="mt-4 p-4 bg-gray-100 rounded">
-											<h3 className="font-semibold">Evaluation Results:</h3>
-											<p>
-												Mark:{" "}
-												{evaluationResults[question.question_id].mark || "N/A"}
-											</p>
-											<p>
-												Conceptual Understanding:{" "}
-												{evaluationResults[question.question_id]
-													.conceptual_understanding || "N/A"}
-											</p>
-											<p>
-												Problem Solving:{" "}
-												{evaluationResults[question.question_id]
-													.problem_solving || "N/A"}
-											</p>
-											<p>
-												Clarity of Expression:{" "}
-												{evaluationResults[question.question_id]
-													.clarity_of_expression || "N/A"}
-											</p>
-											<p>
-												Suggestions:{" "}
-												{evaluationResults[question.question_id].suggestions ||
-													"N/A"}
-											</p>
-										</div>
+										<SingleEvaluationResult
+											result={evaluationResults[question.question_id]}
+										/>
 									)}
 								</div>
 							)}
@@ -333,13 +311,7 @@ export default function EvaluationStepper({
 						Next Topic
 					</Button>
 				) : (
-					<Button
-						className="bg-green-500 text-white px-4 py-2 rounded"
-						onClick={handleFinalReport}
-						disabled={isPending || finalReportLoading}
-					>
-						Get Final Report
-					</Button>
+					<EvaluationResult />
 				)}
 			</div>
 		</div>
