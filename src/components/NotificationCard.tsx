@@ -1,6 +1,7 @@
 import React from "react";
 import TimeStamp from "./TimeStamp";
 import { Button } from "./ui/button";
+import TopicModal from "./TopicModal";
 
 interface NotificationCardProps {
 	imageSrc: string;
@@ -30,7 +31,8 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 				</p>
 				<TimeStamp time={time} />
 			</div>
-			<Button variant="default">Take the Evaluation</Button>
+			<TopicModal />
+			{/* <Button variant="default">Take the Evaluation</Button> */}
 		</article>
 	);
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import Home from "@/components/Home";
+
 export default function DashboardPage() {
-	return <Home />;
+	return <div>page</div>;
 }

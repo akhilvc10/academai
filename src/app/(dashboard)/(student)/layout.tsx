@@ -15,5 +15,13 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return <>{children}</>;
+	return (
+		<>
+			<header>
+				<Navbar />
+				<SubNavbar />
+			</header>
+			{children}
+		</>
+	);
 }
