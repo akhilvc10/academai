@@ -29,7 +29,7 @@ const getFinalReport = async ({ student_id, subject }) => {
 
 const ReportPage = async () => {
 	const res = await getFinalReport({
-		student_id: "1234",
+		student_id: "123456",
 		subject: "history",
 	});
 
