@@ -31,7 +31,11 @@ const TIMELINE_ITEMS = [
 		subtitle: "Russian Involvement",
 		pages: "Pages 50-51",
 	},
-	{ title: "The Renaissance", subtitle: "Pyramids", pages: "World War 1" },
+	{
+		title: "The Renaissance",
+		subtitle: "Impact and Aftermath",
+		pages: "World War 1",
+	},
 	{ title: "World War 1", subtitle: "Global Conflict", pages: "Pages 100-120" },
 	{ title: "World War 2", subtitle: "Major Events", pages: "Pages 150-200" },
 ];

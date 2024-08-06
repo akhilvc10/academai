@@ -8,6 +8,7 @@ const getFinalReport = async ({ student_id, subject }) => {
 
 	const response = await fetch(url, {
 		method: "GET", // Specify the HTTP method
+		cache: "no-store",
 		headers: {
 			"Content-Type": "application/json",
 		},
