@@ -1,9 +1,10 @@
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2 } from "lucide-react";
 
 const SkeletonLoader = () => {
 	return (
-		<div className="w-full max-w-3xl mx-auto p-4 space-y-4">
+		<div className="w-full max-w-3xl mx-auto p-4 space-y-4 relative">
 			{/* Progress bar skeleton */}
 			<div className="flex items-center justify-between">
 				{[1, 2, 3, 4, 5].map((i) => (
@@ -35,6 +36,16 @@ const SkeletonLoader = () => {
 
 			{/* Second answer box skeleton */}
 			<Skeleton className="h-32 w-full" />
+
+			{/* Overlay with label and spinner */}
+			<div className="absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-80">
+				<div className="bg-white flex justify-center items-center flex-row-reverse gap-5 p-4 rounded-md">
+					<Loader2 className="h-8 w-8 animate-spin text-blue-500 mb-2" />
+					<p className="text-gray-700 font-medium">
+						Fetching personalised questions for you
+					</p>
+				</div>
+			</div>
 		</div>
 	);
 };

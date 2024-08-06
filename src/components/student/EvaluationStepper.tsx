@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
 	Tooltip,
 	TooltipContent,
@@ -11,22 +11,25 @@ import { transformInput } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import {
 	evaluateSingleTopicAnswers,
-	getFinalReport,
 	navigateToNextTopic,
 } from "@/actions/actions";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 import EvaluationResult from "./EvaluationResult";
 import SingleEvaluationResult from "./SingleEvaluationResult";
+import { useRouter } from "next/navigation";
 
 export default function EvaluationStepper({
 	questions,
 	currentTopic: initialTopic,
 	selectedTopicsArray,
 }) {
-	const currentTopicIndex = selectedTopicsArray.indexOf(initialTopic);
+	const currentTopicIndex = selectedTopicsArray.findIndex(
+		(item) => item.title === initialTopic,
+	);
 	const [topics, setTopics] = useState([]);
 	const [currentTopic, setCurrentTopic] = useState(0);
+	const router = useRouter();
 
 	const [expandedQuestions, setExpandedQuestions] = useState({});
 	const [answers, setAnswers] = useState({});
@@ -61,22 +64,6 @@ export default function EvaluationStepper({
 			}
 		},
 	});
-	console.log(
-		"🚀 ~ file: EvaluationStepper.tsx ~ line 28 ~ evaluationResults",
-		evaluationResults,
-	);
-	const { mutate: getFinalreportHandler, isPending: finalReportLoading } =
-		useMutation({
-			mutationFn: getFinalReport,
-			onSuccess: (data) => {
-				if (data) {
-					console.log(
-						"🚀 ~ file: EvaluationStepper.tsx ~ line 60 ~ data",
-						data,
-					);
-				}
-			},
-		});
 
 	const { mutate: nextTopicHandler, isPending: nextTopicLoading } = useMutation(
 		{
@@ -87,15 +74,16 @@ export default function EvaluationStepper({
 	useEffect(() => {
 		const topicsWithQuestions = selectedTopicsArray
 			.map((topic) => {
-				if (topic === initialTopic) {
+				if (topic.title === initialTopic) {
 					return {
-						name: topic,
-						title: topic,
-						questions: questions,
+						name: topic.title,
+						title: topic.title,
+						questions: topic.title === initialTopic ? questions : [],
 					};
 				}
 			})
 			.filter(Boolean);
+
 		setTopics(topicsWithQuestions);
 		const initialTopicIndex = topicsWithQuestions.findIndex(
 			(t) => t.name === initialTopic,
@@ -117,12 +105,12 @@ export default function EvaluationStepper({
 	};
 
 	const handlePreviousTopic = () => {
-		const previousTopicName = selectedTopicsArray[currentTopicIndex - 1];
+		const previousTopicName = selectedTopicsArray[currentTopicIndex - 1].title;
 		nextTopicHandler(previousTopicName);
 	};
 
 	const handleNextTopic = () => {
-		const nextTopicName = selectedTopicsArray[currentTopicIndex + 1];
+		const nextTopicName = selectedTopicsArray[currentTopicIndex + 1].title;
 		nextTopicHandler(nextTopicName);
 	};
 
@@ -137,10 +125,7 @@ export default function EvaluationStepper({
 	};
 
 	const handleFinalReport = async () => {
-		await getFinalreportHandler({
-			student_id: "123456",
-			subject: "history",
-		});
+		router.push("report");
 	};
 
 	if (error) {
@@ -193,7 +178,7 @@ export default function EvaluationStepper({
 								</li>
 							</TooltipTrigger>
 							<TooltipContent>
-								<p>{topic}</p>
+								<p>{topic.title}</p>
 							</TooltipContent>
 						</Tooltip>
 					</TooltipProvider>
@@ -225,7 +210,7 @@ export default function EvaluationStepper({
 					{topics[currentTopic].questions.map((question) => (
 						<div
 							key={question.question_id}
-							className="bg-white rounded-lg shadow-md p-4 mb-4"
+							className="bg-white rounded-lg border border-gray-300 p-4 mb-4"
 						>
 							<div
 								className="flex justify-between items-center cursor-pointer"
@@ -292,7 +277,7 @@ export default function EvaluationStepper({
 					<Button
 						className="bg-green-500 text-white px-4 py-2 rounded"
 						onClick={handleSubmit}
-						disabled={isPending || finalReportLoading}
+						disabled={isPending}
 					>
 						{isSubmitted
 							? "Submitted"
@@ -311,7 +296,14 @@ export default function EvaluationStepper({
 						Next Topic
 					</Button>
 				) : (
-					<EvaluationResult />
+					<Suspense fallback="Loading...">
+						<Button
+							className="bg-blue-500 text-white px-4 py-2 rounded"
+							onClick={handleFinalReport}
+						>
+							Get final Report
+						</Button>
+					</Suspense>
 				)}
 			</div>
 		</div>
