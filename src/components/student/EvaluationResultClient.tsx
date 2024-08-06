@@ -75,7 +75,7 @@ export default function EvaluationResultClient({ data }) {
 							<div className="w-64 h-64">
 								<SpeedoMeter
 									percentage={percentage_marks}
-									title={`${percentage_marks}%`}
+									title={`${Math.floor(percentage_marks)}%`}
 								/>
 							</div>
 						</CardContent>
